@@ -1,0 +1,22 @@
+package {package};
+
+import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+import {package}.databinding.Activity{name}Binding;
+
+/**
+ * {title}
+ */
+public class {className} extends AppCompatActivity {
+
+    @NonNull
+    Activity{name}Binding binding = DataBindingUtil.setContentView(this, R.layout.{xmlName});
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}

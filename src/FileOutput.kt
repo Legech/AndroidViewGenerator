@@ -50,11 +50,13 @@ class FileOutput {
             } else {
                 val name = csvList[2];
                 val packageName = csvList[3]
-                val title = csvList[4]
-                val xmlName = "activity_" + csvList[2].toLowerCase()
+                val activityPackageName = csvList[3] + "." + csvList[4]
+                val title = csvList[5]
+                val xmlName = "activity_" + csvList[2].toSnakeCase()
 
                 var temp = javaTemplate.replace("{name}", name)
                 temp = temp.replace("{className}", name + "Activity")
+                temp = temp.replace("{activityPackageName}", activityPackageName)
                 temp = temp.replace("{package}", packageName)
                 temp = temp.replace("{xmlName}", xmlName)
                 temp = temp.replace("{title}", title + "\n")
@@ -92,10 +94,29 @@ class FileOutput {
                 val layoutWp = PrintWriter(BufferedWriter(FileWriter(layoutFile)))
                 layoutWp.print(layoutTemplate)
                 layoutWp.close()
+
+                // OutPutComment
+                println("        <activity android:name=\"" + "." + csvList[4] + "." + name + "Activity\"\n" +
+                        "            android:exported=\"false\"\n" +
+                        "            android:screenOrientation=\"portrait\"/>")
             }
         }
 
         br.close()
     }
 
+    private fun String.toSnakeCase(): String {
+        var text: String = ""
+        var isFirst = true
+        this.forEach {
+            if (it.isUpperCase()) {
+                if (isFirst) isFirst = false
+                else text += "_"
+                text += it.toLowerCase()
+            } else {
+                text += it
+            }
+        }
+        return text
+    }
 }

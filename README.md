@@ -11,7 +11,7 @@ Basically, it is output only by building.
 
 ## Version
 
-0.1.0 Beta
+0.2.0 Beta
 
 License
 =======

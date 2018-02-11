@@ -1,3 +1,3 @@
-Number,Type[Java or ~~Kotlin~~],Name,package,title
-0,Java,Main,com.legech,MainTitle
-1,Java,Sub,com.legech,SubTitle
+Number,Type[Java or ~~Kotlin~~],Name,package,ActivityPackage,title
+0,Java,Introduction,com.legech,ui.activity,Login
+1,Java,Login,com.legech,ui.activity,ログイン

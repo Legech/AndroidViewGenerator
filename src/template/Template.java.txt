@@ -13,10 +13,11 @@ import {package}.databinding.Activity{name}Binding;
 public class {className} extends AppCompatActivity {
 
     @NonNull
-    Activity{name}Binding binding = DataBindingUtil.setContentView(this, R.layout.{xmlName});
+    Activity{name}Binding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding =  = DataBindingUtil.setContentView(this, R.layout.{xmlName});
     }
 }

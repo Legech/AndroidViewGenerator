@@ -18,6 +18,6 @@ public class {className} extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =  = DataBindingUtil.setContentView(this, R.layout.{xmlName});
+        binding = DataBindingUtil.setContentView(this, R.layout.{xmlName});
     }
 }

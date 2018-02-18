@@ -1,6 +1,4 @@
 import java.io.*
-import java.io.File
-
 
 
 class FileOutput {
@@ -19,7 +17,6 @@ class FileOutput {
         br.close()
         return stringBuffer.toString()
     }
-
 
     @Throws(IOException::class)
     fun getXmlFileStr(): String {
@@ -41,30 +38,28 @@ class FileOutput {
         val inputFile = "src/setup/class.csv"
         val isr = InputStreamReader(FileInputStream(inputFile))
         val br = BufferedReader(isr)
-        lateinit var repText: Array<String>
 
         for (csv in br.lines()) {
             val csvList = csv.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (csvList[0] == "Number") {
-                repText = csvList.clone()
-            } else {
-                val name = csvList[2];
+            if (csvList[0] != "Number") {
+                val name = csvList[2]
                 val packageName = csvList[3]
                 val activityPackageName = csvList[3] + "." + csvList[4]
                 val title = csvList[5]
                 val xmlName = "activity_" + csvList[2].toSnakeCase()
 
-                var temp = javaTemplate.replace("{name}", name)
-                temp = temp.replace("{className}", name + "Activity")
-                temp = temp.replace("{activityPackageName}", activityPackageName)
-                temp = temp.replace("{package}", packageName)
-                temp = temp.replace("{xmlName}", xmlName)
-                temp = temp.replace("{title}", title + "\n")
-                temp = temp.replace("/**", "/**\n")
-                temp = temp.replace(" */", " */\n")
-                temp = temp.replace(";", ";\n")
-                temp = temp.replace("{", "{\n")
-                temp = temp.replace("}", "}\n")
+                val temp = javaTemplate
+                        .replace("{name}", name)
+                        .replace("{className}", name + "Activity")
+                        .replace("{activityPackageName}", activityPackageName)
+                        .replace("{package}", packageName)
+                        .replace("{xmlName}", xmlName)
+                        .replace("{title}", title + "\n")
+                        .replace("/**", "/**\n")
+                        .replace(" */", " */\n")
+                        .replace(";", ";\n")
+                        .replace("{", "{\n")
+                        .replace("}", "}\n")
 
                 val outJavaPath = "out/src/java/"
                 val newDir = File(outJavaPath)
@@ -106,7 +101,7 @@ class FileOutput {
     }
 
     private fun String.toSnakeCase(): String {
-        var text: String = ""
+        var text = ""
         var isFirst = true
         this.forEach {
             if (it.isUpperCase()) {

@@ -3,41 +3,39 @@ import java.io.*
 
 class FileOutput {
 
+    private fun initBufferedReader(str: String) = BufferedReader(
+            InputStreamReader(FileInputStream(File(str).absolutePath))
+    )
+
     @Throws(IOException::class)
     fun getJavaFileStr(): String {
-        val inputFile = "src/template/Template.java.txt"
-        val isr = InputStreamReader(FileInputStream(File(inputFile).absolutePath))
-        val br = BufferedReader(isr)
         val stringBuffer = StringBuffer()
 
-        br.lines().forEach {
+        val buffer = initBufferedReader("src/template/Template.java.txt")
+        buffer.lines().forEach {
             stringBuffer.append(it)
         }
 
-        br.close()
+        buffer.close()
         return stringBuffer.toString()
     }
 
     @Throws(IOException::class)
     fun getXmlFileStr(): String {
-        val inputFile = "src/template/Template.xml.txt"
-        val isr = InputStreamReader(FileInputStream(File(inputFile).absolutePath))
-        val br = BufferedReader(isr)
         val stringBuffer = StringBuffer()
 
-        br.lines().forEach {
+        val buffer = initBufferedReader("src/template/Template.xml.txt")
+        buffer.lines().forEach {
             stringBuffer.append(it)
         }
 
-        br.close()
+        buffer.close()
         return stringBuffer.toString()
     }
 
     @Throws(IOException::class)
     fun controllerFileReplace(javaTemplate: String, layoutTemplate: String) {
-        val inputFile = "src/setup/class.csv"
-        val isr = InputStreamReader(FileInputStream(inputFile))
-        val br = BufferedReader(isr)
+        val br = BufferedReader(InputStreamReader(FileInputStream("src/setup/class.csv")))
 
         br.lines().forEach {
             val csvList = it.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -65,22 +63,22 @@ class FileOutput {
                 val newDir = File(outJavaPath)
                 newDir.mkdir()
 
-                val activityFileStr = File(outJavaPath + name + "Activity.java").absolutePath
+                val activityFileStr = File("$outJavaPath${name}Activity.java").absolutePath
                 val file = File(activityFileStr)
                 if (file.exists()) {
                     file.delete()
                 }
 
-                val javaWp = PrintWriter(BufferedWriter(FileWriter(file)))
-                javaWp.print(temp)
-                javaWp.close()
+                val javaPw = PrintWriter(BufferedWriter(FileWriter(file)))
+                javaPw.print(temp)
+                javaPw.close()
 
                 // Layout Output
                 val outLayoutPath = "out/src/layout/"
                 val newLayoutDir = File(outLayoutPath)
                 newLayoutDir.mkdir()
 
-                val fileLayoutStr = File(outLayoutPath + xmlName + ".xml").absolutePath
+                val fileLayoutStr = File("$outLayoutPath$xmlName.xml").absolutePath
                 val layoutFile = File(fileLayoutStr)
                 if (layoutFile.exists()) {
                     layoutFile.delete()
@@ -91,7 +89,7 @@ class FileOutput {
                 layoutWp.close()
 
                 // OutPutComment
-                println("<activity android:name=\"" + "." + csvList[4] + "." + name + "Activity\"\n" +
+                println("<activity android:name=\".${csvList[4]}.${name}Activity\"\n" +
                         "android:exported=\"false\"\n" +
                         " android:screenOrientation=\"portrait\"/>")
             }
@@ -101,17 +99,17 @@ class FileOutput {
     }
 
     private fun String.toSnakeCase(): String {
-        var text = ""
+        val stringBuffer = StringBuffer()
         var isFirst = true
         this.forEach {
             if (it.isUpperCase()) {
                 if (isFirst) isFirst = false
-                else text += "_"
-                text += it.toLowerCase()
+                else stringBuffer.append("_")
+                stringBuffer.append(it.toLowerCase())
             } else {
-                text += it
+                stringBuffer.append(it)
             }
         }
-        return text
+        return stringBuffer.toString()
     }
 }

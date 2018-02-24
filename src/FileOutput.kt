@@ -10,8 +10,8 @@ class FileOutput {
         val br = BufferedReader(isr)
         val stringBuffer = StringBuffer()
 
-        for (msg in br.lines()) {
-            stringBuffer.append(msg)
+        br.lines().forEach {
+            stringBuffer.append(it)
         }
 
         br.close()
@@ -25,8 +25,8 @@ class FileOutput {
         val br = BufferedReader(isr)
         val stringBuffer = StringBuffer()
 
-        for (msg in br.lines()) {
-            stringBuffer.append(msg)
+        br.lines().forEach {
+            stringBuffer.append(it)
         }
 
         br.close()
@@ -39,8 +39,8 @@ class FileOutput {
         val isr = InputStreamReader(FileInputStream(inputFile))
         val br = BufferedReader(isr)
 
-        for (csv in br.lines()) {
-            val csvList = csv.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        br.lines().forEach {
+            val csvList = it.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (csvList[0] != "Number") {
                 val name = csvList[2]
                 val packageName = csvList[3]
@@ -65,8 +65,8 @@ class FileOutput {
                 val newDir = File(outJavaPath)
                 newDir.mkdir()
 
-                val file1Str = File(outJavaPath + name + "Activity.java").absolutePath
-                val file = File(file1Str)
+                val activityFileStr = File(outJavaPath + name + "Activity.java").absolutePath
+                val file = File(activityFileStr)
                 if (file.exists()) {
                     file.delete()
                 }
@@ -91,9 +91,9 @@ class FileOutput {
                 layoutWp.close()
 
                 // OutPutComment
-                println("        <activity android:name=\"" + "." + csvList[4] + "." + name + "Activity\"\n" +
-                        "            android:exported=\"false\"\n" +
-                        "            android:screenOrientation=\"portrait\"/>")
+                println("<activity android:name=\"" + "." + csvList[4] + "." + name + "Activity\"\n" +
+                        "android:exported=\"false\"\n" +
+                        " android:screenOrientation=\"portrait\"/>")
             }
         }
 

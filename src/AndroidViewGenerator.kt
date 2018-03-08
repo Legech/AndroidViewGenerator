@@ -9,28 +9,34 @@ fun main(args: Array<String>) {
 
     val fileOutput = FileOutput()
 
-    val fileJavaString: String
     try {
-        fileJavaString = fileOutput.getJavaFileStr()
+        fileOutput.getJavaActivityFileStr()
     } catch (var6: IOException) {
-        println("getJavaFileStr() Error.")
+        println("getJavaActivityFileStr() Error.")
+        println("output failed.")
+        println(var6.toString())
+        return
+    }
+    try {
+        fileOutput.getJavaFragmentFileStr()
+    } catch (var6: IOException) {
+        println("getJavaActivityFileStr() Error.")
         println("output failed.")
         println(var6.toString())
         return
     }
 
-    val fileLayoutString: String
     try {
-        fileLayoutString = fileOutput.getXmlFileStr()
+        fileOutput.setLayoutFileStr()
     } catch (var6: IOException) {
-        println("getXmlFileStr() Error.")
+        println("setLayoutFileStr() Error.")
         println("output failed.")
         println(var6.toString())
         return
     }
 
     try {
-        fileOutput.controllerFileReplace(fileJavaString, fileLayoutString)
+        fileOutput.controllerFileReplace()
     } catch (var5: IOException) {
         println("controllerFileReplace() Error.")
         println("output failed.")

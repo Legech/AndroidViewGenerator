@@ -1,12 +1,12 @@
-package {activityPackageName};
+package {packageName};
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import {package}.R;
-import {package}.databinding.Activity{name}Binding;
+import {appPackage}.R;
+import {appPackage}.databinding.Activity{name}Binding;
 
 /**
  * {title}

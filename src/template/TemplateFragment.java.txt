@@ -1,0 +1,32 @@
+package {appPackage}.ui.fragment;
+
+import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import {appPackage}.R;
+import {appPackage}.databinding.FragmentMenuBinding;
+
+/**
+ * {title}
+ */
+public class {className} extends Fragment {
+
+    private Fragment{name}Binding binding;
+
+    @NonNull
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.{xmlName}, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        binding = Fragment{name}Binding.bind(getView());
+    }
+
+}

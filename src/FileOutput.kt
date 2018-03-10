@@ -95,7 +95,11 @@ class FileOutput {
                             .replace("}", "}\n")
                     else -> throw IOException("viewType Error.")
                 }
-                val outJavaPath = "out/src/java/"
+                val outJavaPath = "out/src/java/" + if (viewType == "Activity") {
+                    "activity/"
+                } else {
+                    "fragment/"
+                }
                 val newDir = File(outJavaPath)
                 newDir.mkdir()
 

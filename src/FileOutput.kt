@@ -57,6 +57,7 @@ class FileOutput {
         br.lines().forEach {
             val csvList = it.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (csvList[0] != "Number") {
+                val type = csvList[1]
                 val name = csvList[2]
                 val appPackage = csvList[3]
                 val filePackageName = csvList[3] + "." + csvList[4]
@@ -103,7 +104,8 @@ class FileOutput {
                 val newDir = File(outJavaPath)
                 newDir.mkdir()
 
-                val activityFileStr = File("$outJavaPath${name}$viewType.java").absolutePath
+                val ext = if (type == "Kotlin") "kt" else "java"
+                val activityFileStr = File("$outJavaPath${name}$viewType.$ext").absolutePath
                 val file = File(activityFileStr)
                 if (file.exists()) {
                     file.delete()

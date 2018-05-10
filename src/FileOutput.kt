@@ -13,28 +13,16 @@ class FileOutput {
 
     @Throws(IOException::class)
     fun getJavaActivityFileStr() {
-        val stringBuffer = StringBuffer()
-
         val buffer = initBufferedReader("src/template/TemplateActivity.java.txt")
-        buffer.lines().forEach {
-            stringBuffer.append(it)
-        }
-
+        javaActivityStr = buffer.readAll()
         buffer.close()
-        javaActivityStr = stringBuffer.toString()
     }
 
     @Throws(IOException::class)
     fun getJavaFragmentFileStr() {
-        val stringBuffer = StringBuffer()
-
         val buffer = initBufferedReader("src/template/TemplateFragment.java.txt")
-        buffer.lines().forEach {
-            stringBuffer.append(it)
-        }
-
+        javaFragmentStr = buffer.readAll()
         buffer.close()
-        javaFragmentStr = stringBuffer.toString()
     }
 
     @Throws(IOException::class)
@@ -57,6 +45,7 @@ class FileOutput {
         br.lines().forEach {
             val csvList = it.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             if (csvList[0] != "Number") {
+                val type = csvList[1]
                 val name = csvList[2]
                 val appPackage = csvList[3]
                 val filePackageName = csvList[3] + "." + csvList[4]
@@ -75,24 +64,14 @@ class FileOutput {
                             .replace("{packageName}", filePackageName)
                             .replace("{appPackage}", appPackage)
                             .replace("{xmlName}", xmlName)
-                            .replace("{title}", "$title $viewType.\n")
-                            .replace("/**", "/**\n")
-                            .replace(" */", " */\n")
-                            .replace(";", ";\n")
-                            .replace("{", "{\n")
-                            .replace("}", "}\n")
+                            .replace("{title}", "$title $viewType.")
                     "Fragment" -> javaFragmentStr
                             .replace("{name}", name)
                             .replace("{className}", name + viewType)
                             .replace("{packageName}", filePackageName)
                             .replace("{appPackage}", appPackage)
                             .replace("{xmlName}", xmlName)
-                            .replace("{title}", "$title $viewType.\n")
-                            .replace("/**", "/**\n")
-                            .replace(" */", " */\n")
-                            .replace(";", ";\n")
-                            .replace("{", "{\n")
-                            .replace("}", "}\n")
+                            .replace("{title}", "$title $viewType.")
                     else -> throw IOException("viewType Error.")
                 }
                 val outJavaPath = "out/src/java/" + if (viewType == "Activity") {
@@ -103,7 +82,8 @@ class FileOutput {
                 val newDir = File(outJavaPath)
                 newDir.mkdir()
 
-                val activityFileStr = File("$outJavaPath${name}$viewType.java").absolutePath
+                val ext = if (type == "Kotlin") "kt" else "java"
+                val activityFileStr = File("$outJavaPath${name}$viewType.$ext").absolutePath
                 val file = File(activityFileStr)
                 if (file.exists()) {
                     file.delete()
@@ -152,6 +132,19 @@ class FileOutput {
                 stringBuffer.append(it)
             }
         }
+        return stringBuffer.toString()
+    }
+
+    private fun BufferedReader.readAll(): String {
+        val stringBuffer = StringBuffer()
+
+        lines().iterator().asSequence().forEachIndexed { index, value ->
+            if (index > 0) {
+                stringBuffer.append("\n")
+            }
+            stringBuffer.append(value)
+        }
+
         return stringBuffer.toString()
     }
 }

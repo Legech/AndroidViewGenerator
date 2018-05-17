@@ -1,3 +1,5 @@
+package com.legech.android.view.generator
+
 import java.io.*
 
 
@@ -7,20 +9,19 @@ class FileOutput {
     private lateinit var javaFragmentStr: String
     private lateinit var layoutStr: String
 
-    private fun initBufferedReader(str: String) = BufferedReader(
-            InputStreamReader(FileInputStream(File(str).absolutePath))
-    )
+    private fun initBufferedReader(str: String) =
+            BufferedReader(InputStreamReader(javaClass.getResourceAsStream(str), "UTF-8"))
 
     @Throws(IOException::class)
     fun getJavaActivityFileStr() {
-        val buffer = initBufferedReader("src/template/TemplateActivity.java.txt")
+        val buffer = initBufferedReader("/TemplateActivity.java.txt")
         javaActivityStr = buffer.readAll()
         buffer.close()
     }
 
     @Throws(IOException::class)
     fun getJavaFragmentFileStr() {
-        val buffer = initBufferedReader("src/template/TemplateFragment.java.txt")
+        val buffer = initBufferedReader("/TemplateFragment.java.txt")
         javaFragmentStr = buffer.readAll()
         buffer.close()
     }
@@ -29,7 +30,7 @@ class FileOutput {
     fun setLayoutFileStr() {
         val stringBuffer = StringBuffer()
 
-        val buffer = initBufferedReader("src/template/Template.xml.txt")
+        val buffer = initBufferedReader("/Template.xml.txt")
         buffer.lines().forEach {
             stringBuffer.append(it)
         }
@@ -40,7 +41,7 @@ class FileOutput {
 
     @Throws(IOException::class)
     fun controllerFileReplace() {
-        val br = BufferedReader(InputStreamReader(FileInputStream("src/setup/class.csv")))
+        val br = initBufferedReader("/class.csv")
 
         br.lines().forEach {
             val csvList = it.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -48,7 +49,7 @@ class FileOutput {
                 val type = csvList[1]
                 val name = csvList[2]
                 val appPackage = csvList[3]
-                val filePackageName = csvList[3] + "." + csvList[4]
+                val filePackageName = csvList[3] + "" + csvList[4]
                 val viewType = csvList[5] // Activity or Fragment
                 val title = csvList[6]
                 val xmlName = if (viewType == "Activity") {
@@ -74,16 +75,20 @@ class FileOutput {
                             .replace("{title}", "$title $viewType.")
                     else -> throw IOException("viewType Error.")
                 }
-                val outJavaPath = "out/src/java/" + if (viewType == "Activity") {
-                    "activity/"
+                val outSrcPath = File("out/src/")
+                if (!outSrcPath.exists()) {
+                    outSrcPath.mkdir()
+                }
+                val outJavaPath = outSrcPath.path + if (viewType == "Activity") {
+                    "/activity/"
                 } else {
-                    "fragment/"
+                    "/fragment/"
                 }
                 val newDir = File(outJavaPath)
                 newDir.mkdir()
 
                 val ext = if (type == "Kotlin") "kt" else "java"
-                val activityFileStr = File("$outJavaPath${name}$viewType.$ext").absolutePath
+                val activityFileStr = File("$outJavaPath$name$viewType.$ext").absolutePath
                 val file = File(activityFileStr)
                 if (file.exists()) {
                     file.delete()

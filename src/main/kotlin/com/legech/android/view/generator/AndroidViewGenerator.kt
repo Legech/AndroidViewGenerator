@@ -1,3 +1,4 @@
+package com.legech.android.view.generator
 
 import java.io.IOException
 

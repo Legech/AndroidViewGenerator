@@ -1,0 +1,3 @@
+rootProject.name = 'com.legech.android.view.generator'
+rootProject.buildFileName = 'build.gradle.kts'
+

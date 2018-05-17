@@ -1,7 +1,6 @@
 package com.legech.android.view.generator
 
 import java.io.*
-import java.util.*
 
 
 class FileOutput {

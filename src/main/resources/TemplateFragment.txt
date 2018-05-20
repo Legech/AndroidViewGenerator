@@ -1,4 +1,4 @@
-package {appPackage}.ui.fragment;
+package ${PACKAGE_NAME}.ui.fragment;
 
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -6,26 +6,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import {appPackage}.R;
-import {appPackage}.databinding.Fragment{name}Binding;
+import ${APP_PACKAGE}.R;
+import ${APP_PACKAGE}.databinding.Fragment${NAME}Binding;
 
 /**
- * {title}
+ * ${TITLE}
  */
-public class {className} extends Fragment {
+public class ${CLASS_NAME} extends Fragment {
 
-    private Fragment{name}Binding binding;
+    private Fragment${NAME}Binding binding;
 
     @NonNull
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.{xmlName}, container, false);
+        return inflater.inflate(R.layout.${XML_NAME}, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding = Fragment{name}Binding.bind(getView());
+        binding = Fragment${NAME}Binding.bind(getView());
     }
-
 }

@@ -14,14 +14,14 @@ class FileOutput {
 
     @Throws(IOException::class)
     fun getJavaActivityFileStr() {
-        val buffer = initBufferedReader("/TemplateActivity.java.txt")
+        val buffer = initBufferedReader("/TemplateActivity.txt")
         javaActivityStr = buffer.readAll()
         buffer.close()
     }
 
     @Throws(IOException::class)
     fun getJavaFragmentFileStr() {
-        val buffer = initBufferedReader("/TemplateFragment.java.txt")
+        val buffer = initBufferedReader("/TemplateFragment.txt")
         javaFragmentStr = buffer.readAll()
         buffer.close()
     }
@@ -60,19 +60,19 @@ class FileOutput {
 
                 val temp = when (viewType) {
                     "Activity" -> javaActivityStr
-                            .replace("{name}", name)
-                            .replace("{className}", name + viewType)
-                            .replace("{packageName}", filePackageName)
-                            .replace("{appPackage}", appPackage)
-                            .replace("{xmlName}", xmlName)
-                            .replace("{title}", "$title $viewType.")
+                            .replace("\${NAME}", name)
+                            .replace("\${CLASS_NAME}", name + viewType)
+                            .replace("\${PACKAGE_NAME}", filePackageName)
+                            .replace("\${APP_PACKAGE}", appPackage)
+                            .replace("\${XML_NAME}", xmlName)
+                            .replace("\${TITLE}", "$title $viewType.")
                     "Fragment" -> javaFragmentStr
-                            .replace("{name}", name)
-                            .replace("{className}", name + viewType)
-                            .replace("{packageName}", filePackageName)
-                            .replace("{appPackage}", appPackage)
-                            .replace("{xmlName}", xmlName)
-                            .replace("{title}", "$title $viewType.")
+                            .replace("\${NAME}", name)
+                            .replace("\${CLASS_NAME}", name + viewType)
+                            .replace("\${PACKAGE_NAME}", filePackageName)
+                            .replace("\${APP_PACKAGE}", appPackage)
+                            .replace("\${XML_NAME}", xmlName)
+                            .replace("\${TITLE}", "$title $viewType.")
                     else -> throw IOException("viewType Error.")
                 }
                 val outSrcPath = File("out/src/")

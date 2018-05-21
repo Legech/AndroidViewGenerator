@@ -13,11 +13,11 @@ fun main(args: Array<String>) {
     fileOutput.initData()
 
     try {
-        fileOutput.controllerFileReplace()
-    } catch (var5: IOException) {
+        fileOutput.fileOutputExecute()
+    } catch (var1: Exception) {
         println("controllerFileReplace() Error.")
         println("output failed.")
-        println(var5.message)
+        println(var1.message)
         return
     }
 

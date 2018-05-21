@@ -1,45 +1,55 @@
-package com.legech.android.view.generator
+package com.legech.android.view.generator.model
 
+import com.google.gson.Gson
+import com.legech.android.view.generator.entity.OutputEntity
+import com.legech.android.view.generator.extensions.readAll
+import com.legech.android.view.generator.extensions.toSnakeCase
 import java.io.*
 
 
-class FileOutput {
+class OutputModel {
 
     private lateinit var javaActivityStr: String
     private lateinit var javaFragmentStr: String
     private lateinit var layoutStr: String
 
+    private lateinit var outputEntity: OutputEntity
+
     private fun initBufferedReader(str: String) =
             BufferedReader(InputStreamReader(javaClass.getResourceAsStream(str), "UTF-8"))
 
-    @Throws(IOException::class)
-    fun getJavaActivityFileStr() {
+    fun initData() {
+        val buffers = initBufferedReader("/setting.json")
+        val settingJson = buffers.readAll()
+        outputEntity = Gson().fromJson<OutputEntity>(settingJson, OutputEntity::class.java)
+
+        getActivityFileStr()
+        getFragmentFileStr()
+        setLayoutFileStr()
+    }
+
+    private fun getActivityFileStr() {
         val buffer = initBufferedReader("/TemplateActivity.txt")
         javaActivityStr = buffer.readAll()
         buffer.close()
     }
 
-    @Throws(IOException::class)
-    fun getJavaFragmentFileStr() {
+    private fun getFragmentFileStr() {
         val buffer = initBufferedReader("/TemplateFragment.txt")
         javaFragmentStr = buffer.readAll()
         buffer.close()
     }
 
-    @Throws(IOException::class)
-    fun setLayoutFileStr() {
-        val stringBuffer = StringBuffer()
-
+    private fun setLayoutFileStr() {
         val buffer = initBufferedReader("/Template.xml.txt")
-        buffer.lines().forEach {
-            stringBuffer.append(it)
-        }
-
+        layoutStr = buffer.readAll()
         buffer.close()
-        layoutStr = stringBuffer.toString()
     }
 
-    @Throws(IOException::class)
+    fun fileOutputExecute() {
+
+    }
+
     fun controllerFileReplace() {
         val br = initBufferedReader("/class.csv")
 
@@ -58,23 +68,14 @@ class FileOutput {
                     "fragment_"
                 } + csvList[2].toSnakeCase()
 
-                val temp = when (viewType) {
-                    "Activity" -> javaActivityStr
+                val temp =  javaActivityStr
                             .replace("\${NAME}", name)
                             .replace("\${CLASS_NAME}", name + viewType)
                             .replace("\${PACKAGE_NAME}", filePackageName)
                             .replace("\${APP_PACKAGE}", appPackage)
                             .replace("\${XML_NAME}", xmlName)
                             .replace("\${TITLE}", "$title $viewType.")
-                    "Fragment" -> javaFragmentStr
-                            .replace("\${NAME}", name)
-                            .replace("\${CLASS_NAME}", name + viewType)
-                            .replace("\${PACKAGE_NAME}", filePackageName)
-                            .replace("\${APP_PACKAGE}", appPackage)
-                            .replace("\${XML_NAME}", xmlName)
-                            .replace("\${TITLE}", "$title $viewType.")
-                    else -> throw IOException("viewType Error.")
-                }
+
                 val outSrcPath = File("out/src/")
                 if (!outSrcPath.exists()) {
                     outSrcPath.mkdir()
@@ -123,33 +124,5 @@ class FileOutput {
         }
 
         br.close()
-    }
-
-    private fun String.toSnakeCase(): String {
-        val stringBuffer = StringBuffer()
-        var isFirst = true
-        this.forEach {
-            if (it.isUpperCase()) {
-                if (isFirst) isFirst = false
-                else stringBuffer.append("_")
-                stringBuffer.append(it.toLowerCase())
-            } else {
-                stringBuffer.append(it)
-            }
-        }
-        return stringBuffer.toString()
-    }
-
-    private fun BufferedReader.readAll(): String {
-        val stringBuffer = StringBuffer()
-
-        lines().iterator().asSequence().forEachIndexed { index, value ->
-            if (index > 0) {
-                stringBuffer.append("\n")
-            }
-            stringBuffer.append(value)
-        }
-
-        return stringBuffer.toString()
     }
 }

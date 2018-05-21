@@ -1,5 +1,6 @@
 package com.legech.android.view.generator
 
+import com.legech.android.view.generator.model.OutputModel
 import java.io.IOException
 
 fun main(args: Array<String>) {
@@ -8,33 +9,8 @@ fun main(args: Array<String>) {
     println("Start Generator")
     println("_/_/_/_/_/_/_/_/_/_/_/_/_/")
 
-    val fileOutput = FileOutput()
-
-    try {
-        fileOutput.getJavaActivityFileStr()
-    } catch (var6: IOException) {
-        println("getJavaActivityFileStr() Error.")
-        println("output failed.")
-        println(var6.toString())
-        return
-    }
-    try {
-        fileOutput.getJavaFragmentFileStr()
-    } catch (var6: IOException) {
-        println("getJavaActivityFileStr() Error.")
-        println("output failed.")
-        println(var6.toString())
-        return
-    }
-
-    try {
-        fileOutput.setLayoutFileStr()
-    } catch (var6: IOException) {
-        println("setLayoutFileStr() Error.")
-        println("output failed.")
-        println(var6.toString())
-        return
-    }
+    val fileOutput = OutputModel()
+    fileOutput.initData()
 
     try {
         fileOutput.controllerFileReplace()

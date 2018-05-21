@@ -1,4 +1,4 @@
-Number,Type[Java or Kotlin],Name,package,ActivityPackage,Type[Activity or Fragment],title
-0,Java,Introduction,com.legech,ui.activity,Activity,Introduction
-1,Java,Login,com.legech,ui.activity,Activity,Login
+Name,ActivityPackage,title
+Introduction,
+Login,com.legech,ui.activity,Activity,Login
 2,Java,Top,com.legech,ui.fragment,Fragment,Top

@@ -1,5 +1,5 @@
 group 'AndroidViewGenerator'
-version '0.4.0-SNAPSHOT'
+version '0.5.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.2.41'
@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    implementation 'com.google.code.gson:gson:2.8.4'
 }
 
 compileKotlin {

@@ -60,7 +60,8 @@ class OutputModel {
                 }
             }
             PrintWriter(BufferedWriter(FileWriter(file))).apply {
-                print(javaActivityStr
+                val replaceText = if (it.isActivity()) javaActivityStr else javaFragmentStr
+                print(replaceText
                         .replace("\${NAME}", it.className)
                         .replace("\${CLASS_NAME}", it.className + it.outputType)
                         .replace("\${PACKAGE_NAME}", filePackageName)

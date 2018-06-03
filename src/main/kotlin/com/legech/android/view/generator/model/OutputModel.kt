@@ -39,17 +39,13 @@ class OutputModel {
         outputEntity.classEntityList.forEach {
             val filePackageName = setting.packageName + "." +
                     if (it.isActivity()) setting.activityOutputPackage else setting.fragmentOutputPackage
-            val xmlName = if (it.isActivity()) {
-                "activity_"
-            } else {
-                "fragment_"
-            } + it.className.toSnakeCase()
+            val xmlName = it.outputType.toLowerCase() + "_" + it.className.toSnakeCase()
 
             val outSrcPath = File("out/src/")
             if (!outSrcPath.exists()) {
                 outSrcPath.mkdir()
             }
-            val outJavaPath = outSrcPath.path + if (it.isActivity()) "/activity/" else "/fragment/"
+            val outJavaPath = outSrcPath.path + "/" + it.outputType.toLowerCase() + "/"
             File(outJavaPath).apply {
                 mkdir()
             }

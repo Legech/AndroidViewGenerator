@@ -1,7 +1,7 @@
 package com.legech.android.view.generator.extensions
 
-import com.legech.android.view.generator.entity.ClassEntity
+import com.legech.android.view.generator.entity.UiClassEntity
 
-fun ClassEntity.isActivity() = this.outputType == "Activity"
+fun UiClassEntity.isActivity() = this.outputType == "Activity"
 
-fun ClassEntity.isFragment() = this.outputType == "Fragment"
+fun UiClassEntity.isFragment() = this.outputType == "Fragment"

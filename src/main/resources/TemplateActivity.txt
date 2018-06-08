@@ -1,4 +1,4 @@
-package ${PACKAGE_NAME}.ui.activity;
+package ${PACKAGE_NAME}.${OUTPUT_PACKAGE};
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,7 @@ import ${APP_PACKAGE}.R;
 import ${APP_PACKAGE}.databinding.Activity${NAME}Binding;
 
 /**
- * ${TITLE}
+ * ${TITLE}.
  */
 public class ${CLASS_NAME} extends AppCompatActivity {
 

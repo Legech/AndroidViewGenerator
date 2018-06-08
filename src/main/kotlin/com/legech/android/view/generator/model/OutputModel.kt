@@ -6,8 +6,9 @@ import com.legech.android.view.generator.extensions.*
 import java.io.*
 
 class OutputModel {
-    private lateinit var javaActivityStr: String
-    private lateinit var javaFragmentStr: String
+    private lateinit var activityStr: String
+    private lateinit var fragmentStr: String
+    private lateinit var presenterStr: String
     private lateinit var layoutStr: String
 
     private lateinit var outputEntity: OutputEntity
@@ -21,11 +22,15 @@ class OutputModel {
         outputEntity = Gson().fromJson<OutputEntity>(settingJson, OutputEntity::class.java)
 
         initBufferedReader("/TemplateActivity.txt").also {
-            javaActivityStr = it.readAll()
+            activityStr = it.readAll()
             it.close()
         }
         initBufferedReader("/TemplateFragment.txt").also {
-            javaFragmentStr = it.readAll()
+            fragmentStr = it.readAll()
+            it.close()
+        }
+        initBufferedReader("/TemplatePresenter.txt").also {
+            presenterStr = it.readAll()
             it.close()
         }
         initBufferedReader("/Template.xml.txt").also {
@@ -36,35 +41,55 @@ class OutputModel {
 
     fun fileOutputExecute() {
         val setting = outputEntity.settingEntity
-        outputEntity.classEntityList.forEach {
-            val filePackageName = setting.packageName + "." +
-                    if (it.isActivity()) setting.activityOutputPackage else setting.fragmentOutputPackage
+        outputEntity.uiUiClassEntityList.forEach {
             val xmlName = it.outputType.toLowerCase() + "_" + it.className.toSnakeCase()
 
             val outSrcPath = File("out/src/")
             if (!outSrcPath.exists()) {
                 outSrcPath.mkdir()
             }
-            val outJavaPath = outSrcPath.path + "/" + it.outputType.toLowerCase() + "/"
-            File(outJavaPath).apply {
+            val outPath = outSrcPath.path + "/" + it.outputType.toLowerCase() + "/"
+            File(outPath).apply {
                 mkdir()
             }
-            val activityFileStr = File("$outJavaPath${it.className}${it.outputType}.${setting.fileExt()}").absolutePath
-            val file = File(activityFileStr).apply {
+            val outPresenterPath = outSrcPath.path + "/presenter/"
+            File(outPresenterPath).apply {
+                mkdir()
+            }
+            val fileStr = File("$outPath${it.className}${it.outputType}.${setting.fileExt()}").absolutePath
+            val uiFile = File(fileStr).apply {
                 if (exists()) {
                     delete()
                 }
             }
-            PrintWriter(BufferedWriter(FileWriter(file))).apply {
-                val replaceText = if (it.isActivity()) javaActivityStr else javaFragmentStr
+            PrintWriter(BufferedWriter(FileWriter(uiFile))).apply {
+                val replaceText = if (it.isActivity()) activityStr else fragmentStr
                 print(replaceText
                         .replace("\${NAME}", it.className)
                         .replace("\${CLASS_NAME}", it.className + it.outputType)
-                        .replace("\${PACKAGE_NAME}", filePackageName)
-                        .replace("\${APP_PACKAGE}", setting.packageName)
+                        .replace("\${PACKAGE_NAME}", setting.packageName)
+                        .replace("\${OUTPUT_PACKAGE}", if (it.isActivity()) setting.activityOutputPackage else setting.fragmentOutputPackage)
                         .replace("\${XML_NAME}", xmlName)
                         .replace("\${TITLE}", it.title))
                 close()
+            }
+            // Presenter
+            if (it.outPresenter) {
+                val presenterFileStr = File("$outPresenterPath${it.className}Presenter.${setting.fileExt()}").absolutePath
+                val presenterFile = File(presenterFileStr).apply {
+                    if (exists()) {
+                        delete()
+                    }
+                }
+                PrintWriter(BufferedWriter(FileWriter(presenterFile))).apply {
+                    print(presenterStr
+                            .replace("\${NAME}", it.className)
+                            .replace("\${CLASS_NAME}", it.className + it.outputType)
+                            .replace("\${PACKAGE_NAME}", setting.packageName)
+                            .replace("\${OUTPUT_PACKAGE}", setting.presenterOutputPackage)
+                            .replace("\${TITLE}", it.title))
+                    close()
+                }
             }
             // Layout Output
             val layoutPath = "out/src/layout/"

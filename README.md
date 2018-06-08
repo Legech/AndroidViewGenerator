@@ -11,7 +11,7 @@ Basically, it is output only by building.
 
 ## Version
 
-0.5.0 Beta
+0.6.0 Beta
 
 License
 =======
@@ -19,7 +19,7 @@ License
     Copyright 2018 Legech, Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
+    you may not use this presenterFile except in compliance with the License.
     You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0

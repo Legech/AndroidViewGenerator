@@ -11,5 +11,7 @@ data class SettingEntity(
         @SerializedName("activity_output_package")
         val activityOutputPackage: String,
         @SerializedName("fragment_output_package")
-        val fragmentOutputPackage: String
+        val fragmentOutputPackage: String,
+        @SerializedName("presenter_output_package")
+        val presenterOutputPackage: String
 )

@@ -1,0 +1,13 @@
+package ${PACKAGE_NAME}.${OUTPUT_PACKAGE};
+
+/**
+ * ${TITLE} Presenter.
+ */
+public class ${CLASS_NAME} {
+
+    private ${CLASS_NAME}View view;
+
+    public void set${CLASS_NAME}View(${CLASS_NAME}View view) {
+        this.view = view;
+    }
+}

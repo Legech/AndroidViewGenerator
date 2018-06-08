@@ -1,4 +1,4 @@
-package ${PACKAGE_NAME}.ui.fragment;
+package ${PACKAGE_NAME}.${OUTPUT_PACKAGE};
 
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import ${APP_PACKAGE}.R;
 import ${APP_PACKAGE}.databinding.Fragment${NAME}Binding;
 
 /**
- * ${TITLE}
+ * ${TITLE}.
  */
 public class ${CLASS_NAME} extends Fragment {
 

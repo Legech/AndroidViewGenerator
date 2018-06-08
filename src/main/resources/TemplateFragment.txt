@@ -1,30 +1,30 @@
-package ${PACKAGE_NAME}.${OUTPUT_PACKAGE};
+package ${PACKAGE_NAME}.${OUTPUT_PACKAGE}
 
-import android.support.annotation.NonNull;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import ${APP_PACKAGE}.R;
-import ${APP_PACKAGE}.databinding.Fragment${NAME}Binding;
+import android.support.annotation.NonNull
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import ${PACKAGE_NAME}.R
+import ${PACKAGE_NAME}.databinding.Fragment${NAME}Binding
 
 /**
  * ${TITLE}.
  */
-public class ${CLASS_NAME} extends Fragment {
+class ${CLASS_NAME} : Fragment() {
 
-    private Fragment${NAME}Binding binding;
+  private lateinit var Fragment${NAME}Binding binding
 
-    @NonNull
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.${XML_NAME}, container, false);
-    }
+  @NonNull
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.${XML_NAME}, container, false)
+  }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        binding = Fragment${NAME}Binding.bind(getView());
-    }
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState)
+    binding = Fragment${NAME}Binding.bind(getView())
+  }
 }

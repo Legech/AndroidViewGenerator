@@ -1,22 +1,27 @@
-package ${PACKAGE_NAME}.${OUTPUT_PACKAGE};
+package ${PACKAGE_NAME}.${OUTPUT_PACKAGE}
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.annotation.NonNull
+import android.databinding.DataBindingUtil
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 
-import ${APP_PACKAGE}.R;
-import ${APP_PACKAGE}.databinding.Activity${NAME}Binding;
+import ${PACKAGE_NAME}.R
+import ${PACKAGE_NAME}.databinding.Activity${NAME}Binding
 
 /**
  * ${TITLE}.
  */
-public class ${CLASS_NAME} extends AppCompatActivity {
+class ${CLASS_NAME} : AppCompatActivity() {
 
-    Activity${NAME}Binding binding;
+  val binding: Activity${NAME}Binding by lazy {
+    DataBindingUtil.setContentView<Activity${NAME}Binding>(this, R.layout.${XML_NAME})
+  }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.${XML_NAME});
-    }
+  public fun start(@NonNull Context context) {
+    startActivity(context, ${CLASS_NAME}.this)
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+  }
 }

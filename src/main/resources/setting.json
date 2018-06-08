@@ -1,6 +1,6 @@
 {
   "setting": {
-    "class_type": "Java",
+    "class_type": "Kotlin",
     "package_name": "com.legech",
     "activity_output_package": "ui.activity",
     "fragment_output_package": "ui.fragment",

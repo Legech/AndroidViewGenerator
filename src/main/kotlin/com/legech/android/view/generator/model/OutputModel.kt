@@ -1,24 +1,11 @@
 package com.legech.android.view.generator.model
 
-import com.legech.android.view.generator.extensions.*
-import java.io.*
+import com.legech.android.view.generator.extensions.createOutputEntity
+import com.legech.android.view.generator.extensions.fileExt
+import com.legech.android.view.generator.extensions.isActivity
+import java.io.File
 
 class OutputModel {
-    private val activityStr by lazy {
-        bufferedString("/TemplateActivity.txt")
-    }
-
-    private val fragmentStr by lazy {
-        bufferedString("/TemplateFragment.txt")
-    }
-
-    private val presenterStr by lazy {
-        bufferedString("/TemplatePresenter.txt")
-    }
-
-    private val layoutStr by lazy {
-        bufferedString("/TemplateLayout.txt")
-    }
 
     private val outputEntity by lazy {
         createOutputEntity("/setting.json")
@@ -27,13 +14,11 @@ class OutputModel {
     fun fileOutputExecute() {
         val setting = outputEntity.setting
         outputEntity.uiClasses.forEach {
-            val xmlName = it.outputType.toLowerCase() + "_" + it.className.toSnakeCase()
-
-            val outSrcPath = File("out/src/")
-            if (!outSrcPath.exists()) {
-                outSrcPath.mkdir()
+            val outSrcFile = File("out/src/")
+            if (!outSrcFile.exists()) {
+                outSrcFile.mkdir()
             }
-            val outPath = outSrcPath.path + "/" + it.outputType.toLowerCase() + "/"
+            val outPath = outSrcFile.path + "/" + it.outputType.toLowerCase() + "/"
             File(outPath).apply {
                 mkdir()
             }
@@ -43,55 +28,12 @@ class OutputModel {
                     delete()
                 }
             }
-            PrintWriter(BufferedWriter(FileWriter(uiFile))).apply {
-                val replaceText = if (it.isActivity()) activityStr else fragmentStr
-                print(replaceText
-                        .replace("\${NAME}", it.className)
-                        .replace("\${CLASS_NAME}", it.className + it.outputType)
-                        .replace("\${PACKAGE_NAME}", setting.packageName)
-                        .replace("\${OUTPUT_PACKAGE}", if (it.isActivity()) setting.activityOutputPackage else setting.fragmentOutputPackage)
-                        .replace("\${XML_NAME}", xmlName)
-                        .replace("\${TITLE}", it.title))
-                close()
-            }
-            // Presenter
-            val outPresenterPath = outSrcPath.path + "/presenter/"
-            File(outPresenterPath).apply {
-                mkdir()
-            }
-            if (it.outPresenter) {
-                val presenterFileStr = File("$outPresenterPath${it.className}Presenter.${setting.fileExt()}").absolutePath
-                val presenterFile = File(presenterFileStr).apply {
-                    if (exists()) {
-                        delete()
-                    }
-                }
-                PrintWriter(BufferedWriter(FileWriter(presenterFile))).apply {
-                    print(presenterStr
-                            .replace("\${NAME}", it.className)
-                            .replace("\${CLASS_NAME}", it.className + it.outputType)
-                            .replace("\${PACKAGE_NAME}", setting.packageName)
-                            .replace("\${OUTPUT_PACKAGE}", setting.presenterOutputPackage)
-                            .replace("\${TITLE}", it.title))
-                    close()
-                }
-            }
-            // Layout Output
-            val layoutPath = "out/src/layout/"
-            File(layoutPath).mkdir()
 
-            File(File("$layoutPath$xmlName.xml").absolutePath).also {
-                if (it.exists()) {
-                    it.delete()
-                }
-                PrintWriter(BufferedWriter(FileWriter(it))).apply {
-                    print(layoutStr)
-                    close()
-                }
-            }
-            // OutPutComment
-            if (it.isActivity()) {
-                setting.outputManifest(it.className)
+            val model = if (it.isActivity()) ActivityOutputModel(it, setting) else FragmentOutputModel(it, setting)
+            model.apply {
+                uiOutput(uiFile)
+                outputPresenter(outSrcFile)
+                outputLayout()
             }
         }
     }

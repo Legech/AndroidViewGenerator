@@ -9,7 +9,7 @@ fun SettingEntity.fileExt() = if (this.classType == "Java") {
 }
 
 fun SettingEntity.outputManifest(className: String) {
-    println("<activity android:name=\".${this.packageName}.${this.activityOutputPackage}.${className}Activity\"\n" +
+    println("<activity android:name=\".${this.activityOutputPackage}.${className}Activity\"\n" +
             "android:exported=\"false\"\n" +
             " android:screenOrientation=\"portrait\"/>")
 }

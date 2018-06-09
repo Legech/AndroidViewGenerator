@@ -13,8 +13,7 @@ fun main(args: Array<String>) {
     try {
         fileOutput.fileOutputExecute()
     } catch (var1: Exception) {
-        println("controllerFileReplace() Error.")
-        println("uiOutput failed.")
+        println("fileOutputExecute() Error.")
         println(var1.message)
         return
     }

@@ -1,0 +1,5 @@
+    // Intent ${TITLE}
+    viewGroup.addView(android.widget.Button(this).apply {
+        text = "${TITLE}"
+        setOnClickListener { startActivity(android.content.Intent(applicationContext, ${CLASS_NAME}::class.java)) }
+    })

@@ -14,17 +14,16 @@ import ${PACKAGE_NAME}.databinding.Fragment${NAME}Binding
  */
 class ${CLASS_NAME} : Fragment() {
 
-  private lateinit var Fragment${NAME}Binding binding
+  private lateinit var binding: FragmentTopBinding
 
   @NonNull
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return inflater.inflate(R.layout.${XML_NAME}, container, false)
   }
 
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-    binding = Fragment${NAME}Binding.bind(getView())
+    val view = view ?: return
+    binding = Fragment${NAME}Binding.bind(view)
   }
 }

@@ -1,5 +1,8 @@
 package com.legech.android.view.generator.extensions
 
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
 fun String.toSnakeCase(): String {
     val stringBuffer = StringBuffer()
     var isFirst = true
@@ -14,3 +17,6 @@ fun String.toSnakeCase(): String {
     }
     return stringBuffer.toString()
 }
+
+fun String.bufferedString(str: String) =
+        BufferedReader(InputStreamReader(javaClass.getResourceAsStream(str), "UTF-8"))

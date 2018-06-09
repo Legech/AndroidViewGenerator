@@ -1,6 +1,7 @@
 package ${PACKAGE_NAME}.${OUTPUT_PACKAGE}
 
-import android.support.annotation.NonNull
+import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,15 +14,18 @@ import ${PACKAGE_NAME}.databinding.Activity${NAME}Binding
  */
 class ${CLASS_NAME} : AppCompatActivity() {
 
-  val binding: Activity${NAME}Binding by lazy {
+  private val binding: Activity${NAME}Binding by lazy {
     DataBindingUtil.setContentView<Activity${NAME}Binding>(this, R.layout.${XML_NAME})
-  }
-
-  public fun start(@NonNull Context context) {
-    startActivity(context, ${CLASS_NAME}.this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    ${ACTIVITY_LINKS}
+  }
+
+  companion object {
+    fun start(context: Context) {
+      context.startActivity(Intent(context, ${CLASS_NAME}::class.java))
+    }
   }
 }

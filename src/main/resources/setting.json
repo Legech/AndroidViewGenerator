@@ -11,16 +11,38 @@
       "title": "名称1",
       "output_type": "Activity",
       "class_name": "Introduction",
-      "out_presenter": true
+      "out_presenter": true,
+      "activity_links": [
+        {
+          "title": "名称2",
+          "class_name": "Login"
+        },
+        {
+          "title": "名称3",
+          "class_name": "Main"
+        }
+      ]
     },
     {
       "title": "名称2",
       "output_type": "Activity",
       "class_name": "Login",
-      "out_presenter": true
+      "out_presenter": true,
+      "activity_links": [
+        {
+          "title": "名称3",
+          "class_name": "Main"
+        }
+      ]
     },
     {
       "title": "名称3",
+      "output_type": "Activity",
+      "class_name": "Main",
+      "out_presenter": true
+    },
+    {
+      "title": "名称4",
       "output_type": "Fragment",
       "class_name": "Top",
       "out_presenter": false

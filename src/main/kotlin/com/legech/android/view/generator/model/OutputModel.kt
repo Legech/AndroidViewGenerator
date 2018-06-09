@@ -1,44 +1,27 @@
 package com.legech.android.view.generator.model
 
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
-import com.legech.android.view.generator.entity.OutputEntity
 import com.legech.android.view.generator.extensions.*
 import java.io.*
 
 class OutputModel {
-    private lateinit var activityStr: String
-    private lateinit var fragmentStr: String
-    private lateinit var presenterStr: String
-    private lateinit var layoutStr: String
+    private val activityStr by lazy {
+        bufferedString("/TemplateActivity.txt")
+    }
 
-    private lateinit var outputEntity: OutputEntity
+    private val fragmentStr by lazy {
+        bufferedString("/TemplateFragment.txt")
+    }
 
-    private fun initBufferedReader(str: String) =
-            BufferedReader(InputStreamReader(javaClass.getResourceAsStream(str), "UTF-8"))
+    private val presenterStr by lazy {
+        bufferedString("/TemplatePresenter.txt")
+    }
 
-    fun initData() {
-        val buffers = initBufferedReader("/setting.json")
-        val settingJson = buffers.readAll()
-        outputEntity = GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
-                .fromJson<OutputEntity>(settingJson, OutputEntity::class.java)
+    private val layoutStr by lazy {
+        bufferedString("/TemplateLayout.txt")
+    }
 
-        initBufferedReader("/TemplateActivity.txt").also {
-            activityStr = it.readAll()
-            it.close()
-        }
-        initBufferedReader("/TemplateFragment.txt").also {
-            fragmentStr = it.readAll()
-            it.close()
-        }
-        initBufferedReader("/TemplatePresenter.txt").also {
-            presenterStr = it.readAll()
-            it.close()
-        }
-        initBufferedReader("/Template.xml.txt").also {
-            layoutStr = it.readAll()
-            it.close()
-        }
+    private val outputEntity by lazy {
+        createOutputEntity("/setting.json")
     }
 
     fun fileOutputExecute() {
@@ -93,10 +76,6 @@ class OutputModel {
                     close()
                 }
             }
-            // ActivityLinks
-//            if (it.activityLinks.isNotEmpty()) {
-//
-//            }
             // Layout Output
             val layoutPath = "out/src/layout/"
             File(layoutPath).mkdir()
@@ -117,3 +96,4 @@ class OutputModel {
         }
     }
 }
+

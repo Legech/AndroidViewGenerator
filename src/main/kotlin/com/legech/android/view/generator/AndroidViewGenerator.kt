@@ -10,8 +10,6 @@ fun main(args: Array<String>) {
     println("_/_/_/_/_/_/_/_/_/_/_/_/_/")
 
     val fileOutput = OutputModel()
-    fileOutput.initData()
-
     try {
         fileOutput.fileOutputExecute()
     } catch (var1: Exception) {

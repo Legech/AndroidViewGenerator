@@ -2,7 +2,7 @@
 
 When you build it, create Activity and Layout.
 
-You can create classes that can be used on Android at once with data created with CSV.
+You can create classes that can be used on Android at once with data created with JSON.
 This application is created with IntelliJ IDEA.
 
 ## how to use

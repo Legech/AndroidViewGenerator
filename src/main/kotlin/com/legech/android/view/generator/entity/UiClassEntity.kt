@@ -10,5 +10,7 @@ data class UiClassEntity(
         @SerializedName("class_name")
         val className: String,
         @SerializedName("out_presenter")
-        val outPresenter: Boolean
+        val outPresenter: Boolean,
+        @SerializedName("links")
+        val links: List<LinkEntity>
 )

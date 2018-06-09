@@ -12,7 +12,7 @@
       "output_type": "Activity",
       "class_name": "Introduction",
       "out_presenter": true,
-      "links": [
+      "activity_links": [
         {
           "title": "名称2",
           "class_name": "Login"
@@ -28,7 +28,7 @@
       "output_type": "Activity",
       "class_name": "Login",
       "out_presenter": true,
-      "links": [
+      "activity_links": [
         {
           "title": "名称3",
           "class_name": "Main"

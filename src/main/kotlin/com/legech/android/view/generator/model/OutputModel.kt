@@ -1,6 +1,7 @@
 package com.legech.android.view.generator.model
 
-import com.google.gson.Gson
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
 import com.legech.android.view.generator.entity.OutputEntity
 import com.legech.android.view.generator.extensions.*
 import java.io.*
@@ -19,7 +20,8 @@ class OutputModel {
     fun initData() {
         val buffers = initBufferedReader("/setting.json")
         val settingJson = buffers.readAll()
-        outputEntity = Gson().fromJson<OutputEntity>(settingJson, OutputEntity::class.java)
+        outputEntity = GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
+                .fromJson<OutputEntity>(settingJson, OutputEntity::class.java)
 
         initBufferedReader("/TemplateActivity.txt").also {
             activityStr = it.readAll()
@@ -40,8 +42,8 @@ class OutputModel {
     }
 
     fun fileOutputExecute() {
-        val setting = outputEntity.settingEntity
-        outputEntity.uiUiClassEntityList.forEach {
+        val setting = outputEntity.setting
+        outputEntity.uiClasses.forEach {
             val xmlName = it.outputType.toLowerCase() + "_" + it.className.toSnakeCase()
 
             val outSrcPath = File("out/src/")
@@ -50,10 +52,6 @@ class OutputModel {
             }
             val outPath = outSrcPath.path + "/" + it.outputType.toLowerCase() + "/"
             File(outPath).apply {
-                mkdir()
-            }
-            val outPresenterPath = outSrcPath.path + "/presenter/"
-            File(outPresenterPath).apply {
                 mkdir()
             }
             val fileStr = File("$outPath${it.className}${it.outputType}.${setting.fileExt()}").absolutePath
@@ -74,6 +72,10 @@ class OutputModel {
                 close()
             }
             // Presenter
+            val outPresenterPath = outSrcPath.path + "/presenter/"
+            File(outPresenterPath).apply {
+                mkdir()
+            }
             if (it.outPresenter) {
                 val presenterFileStr = File("$outPresenterPath${it.className}Presenter.${setting.fileExt()}").absolutePath
                 val presenterFile = File(presenterFileStr).apply {
@@ -91,6 +93,10 @@ class OutputModel {
                     close()
                 }
             }
+            // ActivityLinks
+//            if (it.activityLinks.isNotEmpty()) {
+//
+//            }
             // Layout Output
             val layoutPath = "out/src/layout/"
             File(layoutPath).mkdir()

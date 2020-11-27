@@ -3,7 +3,6 @@ package com.legech.android.view.generator.extensions
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.legech.android.view.generator.entity.OutputEntity
-import com.sun.tools.internal.jxc.gen.config.Classes
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
